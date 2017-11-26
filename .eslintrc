@@ -1,3 +1,13 @@
 {
-  "extends": "airbnb"
+  "extends": [
+    "airbnb",
+    "plugin:import/react"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js",".jsx"]
+      }
+    }
+  }
 }
