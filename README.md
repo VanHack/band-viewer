@@ -38,11 +38,11 @@ Note:
 
 Here are some suggestions to make the app even better.
 
-[] Tests​ - Add test coverage to your code
-[] Cache​ - Persist the last entered artist and events across browser reloads/refreshes
-[] Styles​ - Make it look nicer.
-[] Creative?​ ​- Think of a cool feature? Add it!
-[] Deploy​ - Include a deploy strategy for your app.
+[ ] Tests​ - Add test coverage to your code
+[ ] Cache​ - Persist the last entered artist and events across browser reloads/refreshes
+[ ] Styles​ - Make it look nicer.
+[ ] Creative?​ ​- Think of a cool feature? Add it!
+[ ] Deploy​ - Include a deploy strategy for your app.
 
 ## Additional Information
 
