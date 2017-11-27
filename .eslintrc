@@ -3,11 +3,12 @@
     "airbnb",
     "plugin:import/react"
   ],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js",".jsx"]
+  "rules": {
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [ "src/" ]
       }
-    }
+    ]
   }
 }
