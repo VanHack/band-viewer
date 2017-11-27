@@ -18,27 +18,45 @@ class App extends Component {
     this.handleValueChange = this.handleValueChange.bind(this);
     this.renderBandInfo = this.renderBandInfo.bind(this);
     this.renderNotifications = this.renderNotifications.bind(this);
+    this.addNewNotification = this.addNewNotification.bind(this);
+  }
+
+  addNewNotification(notification) {
+    this.setState({
+      notifications: [...this.state.notifications, notification],
+    });
   }
 
   handleSearch() {
     axios.get(`https://rest.bandsintown.com/artists/${this.state.query}?app_id=band_lookup`)
       .then((res) => {
         if (res.data !== null && res.data !== undefined) {
-          this.setState({
-            bandInfo: res.data,
-          });
+          if (res.data.name === '') {
+            this.addNewNotification({ message: 'Band not found.', severity: 'is-info' });
+          } else {
+            this.setState({
+              bandInfo: res.data,
+            });
+            // Only execute request if event count is greater than 0
+            if (res.data.upcoming_event_count > 0) {
+              axios.get(`https://rest.bandsintown.com/artists/${this.state.query}/events?app_id=band_lookout`)
+                .then((eventRes) => {
+                  if (eventRes.data !== null && eventRes.data !== undefined) {
+                    if (eventRes.data.length === 0) {
+                      this.addNewNotification({ message: 'Events not available.', severity: 'is-info' });
+                    } else {
+                      this.setState({
+                        bandEvents: eventRes.data,
+                      });
+                    }
+                  }
+                })
+                .catch((err) => { this.state.notifications.push({ message: err.message, severity: 'is-danger' }); });
+            }
+          }
         }
       })
-      .catch((err) => { this.state.notifications.push({ message: err, severity: 'is-danger' }); });
-    axios.get(`https://rest.bandsintown.com/artists/${this.state.query}/events?app_id=band_lookout`)
-      .then((res) => {
-        if (res.data !== null && res.data !== undefined) {
-          this.setState({
-            bandEvents: res.data,
-          });
-        }
-      })
-      .catch((err) => { this.state.notifications.push({ message: err, severity: 'is-danger' }); });
+      .catch((err) => { this.state.notifications.push({ message: err.message, severity: 'is-danger' }); });
   }
 
   handleValueChange(e) {
@@ -51,8 +69,6 @@ class App extends Component {
 
   renderBandInfo() {
     if (this.state.bandInfo === undefined || this.state.bandInfo === null) {
-      return (<br />);
-    } else if (this.state.bandEvents === undefined || this.state.bandEvents === null) {
       return (<br />);
     }
     return (<BandInfo info={this.state.bandInfo} events={this.state.bandEvents} />);
@@ -73,7 +89,10 @@ class App extends Component {
       <div>
         <Navbar />
         <br />
-        { this.renderNotifications() }
+        <div className="container">
+          { this.renderNotifications() }
+        </div>
+        <br />
         <div className="container">
           <SearchBox
             query={this.state.query}

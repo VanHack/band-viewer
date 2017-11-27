@@ -9,7 +9,7 @@ const EventInfo = props => (
         <p>
           <strong>{props.event.venue.city},{props.event.venue.country}</strong>
           <span> - </span>
-          <small>{moment(props.event.datetime).fromNow()}</small><br />
+          <small>{moment(props.event.datetime).fromNow()} ({moment(props.event.datetime).format('dddd, MMMM Do YYYY, h:mm:ss a')})</small><br />
           <a href={`https://www.google.com/maps/?q=${props.event.venue.latitude},${props.event.venue.longitude}`}>{props.event.venue.name}</a>
         </p>
       </div>

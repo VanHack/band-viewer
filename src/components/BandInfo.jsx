@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import EventInfo from './EventInfo';
 
 const BandInfo = (props) => {
-  const events = props.events.map(event => (
-    <EventInfo key={event.id} bandName={props.info.name} event={event} />
-  ));
+  let events = '';
+  if (props.events !== null && props.events !== undefined) {
+    events = props.events.map(event => (
+      <EventInfo key={event.id} bandName={props.info.name} event={event} />
+    ));
+  } else {
+    events = <span>This artist / band has no scheduled events...</span>;
+  }
   return (
     <div className="columns">
       <div className="column is-one-third">
@@ -18,9 +23,6 @@ const BandInfo = (props) => {
           <header className="card-header">
             <p className="card-header-title">{props.info.name}</p>
           </header>
-          <div className="card-content">
-            Upcoming events: {props.info.upcoming_event_count}
-          </div>
           <footer className="card-footer">
             <p className="card-footer-item">
               <span>
@@ -38,7 +40,7 @@ const BandInfo = (props) => {
       <div className="column">
         <nav className="card">
           <header className="card-header">
-            <p className="card-header-title">Next Events</p>
+            <p className="card-header-title">Next Events ({props.info.upcoming_event_count})</p>
           </header>
           <div className="card-content">
             {events}
